@@ -1,17 +1,20 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from "axios";
 function Calendar() {
   let [tasks,settasks]=useState([])
-  let [date,setdate]=useState("2023-04-23")
-axios.get("http://localhost:3001/api/alltasks")
-.then((res)=>{settasks(res.data)
-setdate(tasks[0].taskdate)})
-.catch((err)=>console.log("err in calendar.js is",err));
+  let [date,setdate]=useState("")
 
+  useEffect(()=>{
+    axios.get("http://localhost:3001/api/alltasks")
+  .then((res)=>{console.log(res.data[0].taskdate); settasks(res.data)
+  })
+  .catch((err)=>console.log("err in calendar.js is",err));
+
+  },[])
   return (
-    <div><h5>{date}</h5>{
+    <div>{
       tasks.map((obj)=><div>
-        {(date!=obj.taskdate) && (<h2>{obj.taskdate}</h2> && setdate(obj.taskdate))}
+        {(date!==obj.taskdate) && <h5>{date=obj.taskdate}</h5>}
       <div className='taskllists d-flex justify-content-between border border-dark'>
       <div className='pt-3 pb-1 ps-3 text-muted d-flex'>
             <h6 className='me-4'>{obj.task}</h6>
